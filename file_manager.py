@@ -10,8 +10,25 @@ class FileManager:
             print(f"ERROR: File not found. \n{e}")
 
     @staticmethod
-    def read_line_by_line(file_path: str,
-                          encoding: str = "UTF-8") -> list[str] | None:
+    def write_list(
+                file_path: str,
+                data: list[str],
+                encoding: str = "UTF-8"
+                ) -> None:
+        try:
+            # Перед записью, отчищаем содержимое файла.
+            FileManager.write(file_path, "")
+            with open(file_path, 'a', encoding=encoding) as file:
+                for line in data:
+                    file.write(f"{line}\n")
+        except FileNotFoundError as e:
+            print(f"ERROR: File not found. \n{e}")
+
+    @staticmethod
+    def read_line_by_line(
+                    file_path: str,
+                    encoding: str = "UTF-8"
+                    ) -> list[str] | None:
         try:
             result = []
             with open(file_path, 'r', encoding=encoding) as file:
