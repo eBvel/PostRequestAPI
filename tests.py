@@ -1,3 +1,4 @@
+from file_manager import FileManager
 from service import  GoogleMapService
 
 
@@ -42,10 +43,7 @@ class TestGoogleMapAPI:
         print("END TEST")
 
 
-    def test_create_multiple_locations(
-                                    self,
-                                    count: int
-                                    ) -> list[str]:
+    def test_create_multiple_locations(self, count: int) -> None:
         print(f"\nSTART TEST: Create multiple({count}) locations")
         list_of_place_id = list()
         for response in self.service.create_multiple_locations(count):
@@ -55,10 +53,19 @@ class TestGoogleMapAPI:
                                                 "place_id list!")
         print(f"PASSED: Length of place_id list is correctly!\nEND TEST")
 
-        return list_of_place_id
+    def test_record_place_id_list(self, list_length: int) -> None:
+        print("\nSTART TEST: Record place_id list")
+        file_path = "list_of_place_id.txt"
+        
+        initial_list = []
+        for response in self.service.create_multiple_locations(list_length):
+            initial_list.append(response.json().get('place_id'))
 
-    def test_recorded_place_id_list(self, initial_list, recorded_list):
-        print("\nSTART TEST: Recorded place_id list")
-        assert initial_list == recorded_list, \
-            "FAILED: Place_id list is incorrect!"
+        FileManager.write_list(file_path, initial_list)
+        recorded_list = FileManager.read_line_by_line(file_path)
+        print(f"\nInitial list: {initial_list}\n"
+              f"Recorded list: {recorded_list}\n")
+
+        assert initial_list == recorded_list, ("FAILED: Incorrect "
+                                               "place_id list!")
         print("PASSED: Place_id list is correctly!\nEND TEST")
