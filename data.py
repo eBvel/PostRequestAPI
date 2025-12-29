@@ -5,8 +5,10 @@ from dataclasses import dataclass, field
 class GoogleMapDataJSON:
     lat : float = -38.383494
     lng: float = 33.427362
-    location: str = field(init=False,
-                          default=f'{{"lat": {lat}, "lng": {lng}}}')
+    location: str = field(
+                    init=False,
+                    default=f'{{"lat": {lat}, "lng": {lng}}}'
+                    )
     accuracy : int = 50
     name : str = "Frontline house"
     phone_number : str = "(+91) 983 893 3937"
@@ -29,11 +31,11 @@ class GoogleMapDataJSON:
 @dataclass
 class GoogleMapConfig:
     url : str = "https://rahulshettyacademy.com"
-    create_location_body : str = str(GoogleMapDataJSON())
+    location_body : str = str(GoogleMapDataJSON())
     key_param: str = "?key=qaclick123"
     place_id_param : str = "&place_id="
-    create_location_resource : str = "/maps/api/place/add/json"
-    find_location_resource : str = "/maps/api/place/get/json"
+    path_of_create_location_resource : str = "/maps/api/place/add/json"
+    path_of_find_location_resource : str = "/maps/api/place/get/json"
 
 
 class GoogleMapURLBuilder:
@@ -42,11 +44,11 @@ class GoogleMapURLBuilder:
 
     def get_create_location_url(self) -> str:
         return (f"{self.config.url}"
-                f"{self.config.create_location_resource}"
+                f"{self.config.path_of_create_location_resource}"
                 f"{self.config.key_param}")
 
     def get_find_location_url(self) -> str:
         return (f"{self.config.url}"
-                f"{self.config.find_location_resource}"
+                f"{self.config.path_of_find_location_resource}"
                 f"{self.config.key_param}"
                 f"{self.config.place_id_param}")
